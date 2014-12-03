@@ -1,0 +1,51 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+int main()
+{
+	char uname[100];
+	char password[100];
+	scanf("%s",uname);
+	scanf("%s",password);
+	
+	FILE* f;
+	f = fopen("Members.csv","rt");
+	if ( f == NULL )
+	{
+		printf("Error opening file");
+		return;
+	}
+
+	int found = 0;
+        char line[200];
+        char name[200];
+        char pass[200];
+	char field[200];
+	char delim[] = ",";
+	if( !feof(f) )
+	{	
+		fgets(line,200,f);
+		field = strtok(line,delim);
+		printf("%s\n",line);
+	}
+	while( !feof(f) )
+	{
+	//	sscanf(line,"%[^,]s%[\n]s",name,pass);
+		name = strtok(NULL,delim);
+		pass = strtok(NULL,delim);
+		printf("Scanning: %s%s\n",name,pass);
+		if( strcmp(name,uname)==0 && strcmp(pass,password)==0 )
+		{
+			printf("Found!\n");
+			found = 1;
+			break;
+		}
+		fgets(line,200,f);
+	}
+	if( !found )
+	{
+		printf("Not found!\n");
+	}
+	fclose(f);
+}
+
